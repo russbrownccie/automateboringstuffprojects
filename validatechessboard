@@ -1,6 +1,7 @@
-# Russ Brown Chessboard Validator v 0.2
+# Russ Brown Chessboard Validator v 0.3
 
 # changes in 0.2 - cleaned up steps 1 and 2 verification - used lists instead of multiple match statements
+# changes in 0.3 - new dictionary is created of lowercase values from main dictionary, cleaning up checks
 
 # Project from Automate the Boring Stuff with Python, 2nd ed by Al Sweigart
 # This is supposed to validate a proper chess board - there are a LOT of problems but we meet requirements
@@ -8,12 +9,12 @@
 # Also, any pawns on the 1 or 8 file would technically be invalid as they are promoted or backward
 # 8 pawns and bishops on the same color would be invalid - two kings both in check, etc, etc
 # but this meets the project requirements and took a lot of time
-# This should meet case requirements and we have a 'Bking' and 'wRook' in the dictionary for testing
-# In another version the case requirements could be cleaned up by creating a new dictionary before running the function
+# Future improvements would be giving each test it's own function to easier compartmentalize and cleanup code
+# Also should set it up as a while loop, so the moment a check fails, the check can be stopped
 
 
 board = {'e8': 'Bking',
-         'd1': 'wqueen',
+         'd1': 'WQUEEN',
          'c8': 'bbishop',
          'd8': 'bqueen',
          'e1': 'wking',
@@ -42,7 +43,7 @@ board = {'e8': 'Bking',
          }
 
 
-def isvalidchessboard(trialboard):
+def isvalidchessboard(initialboard):
     firstcheckgood = False
     secondcheckgood = False
     thirdcheckgood = False
@@ -52,9 +53,11 @@ def isvalidchessboard(trialboard):
     chesspieces = ["pawn", "knight", "bishop", "rook", "queen", 'king']
     # First Check - verify all Valid Coordinates between A1 and H8:
 
+    trialboard = {k.lower(): v.lower() for k, v in initialboard.items()}
+
     coordinates = (list(trialboard.keys()))
     for chessrow in coordinates:
-        if chessrow[0].lower() in boardrows:
+        if chessrow[0] in boardrows:
             if 0 < int(chessrow[1:]) < 9:
                 firstcheckgood = True
             else:
@@ -67,8 +70,8 @@ def isvalidchessboard(trialboard):
     # Second Check - Verify only valid Chess Pieces and Colors allowed
     pieces = (list(trialboard.values()))
     for color in pieces:
-        if color[0].lower() == 'w' or color[0].lower() == 'b':
-            if color[1:].lower() in chesspieces:
+        if color[0] == 'w' or color[0] == 'b':
+            if color[1:] in chesspieces:
                 secondcheckgood = True
             else:
                 secondcheckgood = False
@@ -84,7 +87,7 @@ def isvalidchessboard(trialboard):
     finalpieces = []
 
     for i in range(len(allpieces)):
-        allpieces[i] = allpieces[i].lower()
+        allpieces[i] = allpieces[i]
         finalpieces.append(allpieces[i])
 
     if finalpieces.count('wking') == 1 and finalpieces.count('bking') == 1:
@@ -99,9 +102,9 @@ def isvalidchessboard(trialboard):
     blackpieces = 0
     for color in finalpieces:
 
-        if color[0].lower() == 'w':
+        if color[0] == 'w':
             whitepieces += 1
-        elif color[0].lower() == 'b':
+        elif color[0] == 'b':
             blackpieces += 1
     if whitepieces < 17 and blackpieces < 17:
         fifthcheckgood = True
@@ -120,3 +123,4 @@ def isvalidchessboard(trialboard):
 
 
 print(isvalidchessboard(board))
+
