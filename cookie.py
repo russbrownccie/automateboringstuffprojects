@@ -25,3 +25,4 @@
 import pyautogui
 for i in range(5000):
     pyautogui.click(239,662)
+
