@@ -1,6 +1,6 @@
-from selenium import webdriver
-browser = webdriver.Chrome()
-browser.get('https://inventwithpython.com')
+# from selenium import webdriver
+# browser = webdriver.Chrome()
+# browser.get('https://inventwithpython.com')
 
 # from selenium import webdriver
 # from selenium.webdriver.chrome.options import Options
@@ -21,3 +21,7 @@ browser.get('https://inventwithpython.com')
 #     .build();
 #
 # driver.get('http://example.com');
+
+import pyautogui
+for i in range(5000):
+    pyautogui.click(239,662)
